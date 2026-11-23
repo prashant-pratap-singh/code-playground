@@ -12,6 +12,7 @@ interface ProjectLink {
 }
 
 export function Footer() {
+  const copyrightYear = 2026;
   const socialLinks = [
     {
       href: "#",
@@ -40,7 +41,7 @@ export function Footer() {
 
         {/* Copyright Notice */}
         <p className="text-sm text-zinc-500 dark:text-zinc-400">
-          &copy; {new Date().getFullYear()} Prashant Pratap Singh. All rights reserved.
+          &copy; {copyrightYear} Prashant Pratap Singh. All rights reserved.
         </p>
       </div>
     </footer>
