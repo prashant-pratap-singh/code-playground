@@ -131,23 +131,24 @@ const TemplateFileTree = ({
           <SidebarGroupLabel>{title}</SidebarGroupLabel>
 
           <DropdownMenu>
-            <DropdownMenuTrigger>
-              <SidebarGroupAction>
-                <Plus className="h-4 w-4" />
-              </SidebarGroupAction>
-            </DropdownMenuTrigger>
+  <DropdownMenuTrigger
+    render={<SidebarGroupAction />}
+  >
+    <Plus className="h-4 w-4" />
+  </DropdownMenuTrigger>
 
-            <DropdownMenuContent align="end">
-              <DropdownMenuItem onClick={handleAddRootFile}>
-                <FilePlus className="h-4 w-4 mr-2" />
-                New File
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={handleAddRootFolder}>
-                <FolderPlus className="h-4 w-4 mr-2" />
-                New Folder
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+  <DropdownMenuContent align="end">
+    <DropdownMenuItem onClick={handleAddRootFile}>
+      <FilePlus className="h-4 w-4 mr-2" />
+      New File
+    </DropdownMenuItem>
+
+    <DropdownMenuItem onClick={handleAddRootFolder}>
+      <FolderPlus className="h-4 w-4 mr-2" />
+      New Folder
+    </DropdownMenuItem>
+  </DropdownMenuContent>
+</DropdownMenu>
 
           <SidebarGroupContent>
             <SidebarMenu>

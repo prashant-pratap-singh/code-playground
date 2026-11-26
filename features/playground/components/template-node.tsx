@@ -58,12 +58,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import {
-  NewFileDialog,
-  NewFolderDialog,
-  RenameFileDialog,
-  RenameFolderDialog,
-} from "./template-file-tree";
+import { NewFileDialog, NewFolderDialog, RenameFolderDialog } from "./template-file-tree";
 
 interface TemplateFile {
   filename: string;
@@ -155,21 +150,23 @@ const isSelected =
     return (
       <SidebarMenuItem>
         <div className="flex items-center group">
-          <SidebarMenuButton className="flex-1">
+          <SidebarMenuButton isActive={isSelected} onClick={()=> onFileSelect?.(file)} className="flex-1">
             <File className="h-4 w-4 mr-2 shrink-0" />
             <span>{fileName}</span>
           </SidebarMenuButton>
 
           <DropdownMenu>
-            <DropdownMenuTrigger>
-              <Button
+            <DropdownMenuTrigger
+              render={
+                <Button
                 variant={"ghost"}
                 size={"icon"}
                 className="h-6 w-6 opacity-0 group-hover:opacity-100 transition-opacity"
-              >
-                <MoreHorizontal className="h-3 w-3" />
-              </Button>
-            </DropdownMenuTrigger>
+                >
+                  <MoreHorizontal className="h-3 w-3" />
+                </Button>
+              }
+            />
             <DropdownMenuContent align="end">
               <DropdownMenuItem onClick={handleRename}>
                 <Edit3 className="h-4 w-4 mr-2" />
@@ -183,13 +180,6 @@ const isSelected =
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
-        <RenameFileDialog
-          isOpen={isRenameDialogOpen}
-          onClose={() => setIsRenameDialogOpen(false)}
-          onRename={handleRenameSubmit}
-          currentFilename={file.filename}
-          currentExtension={file.fileExtension}
-        />
       </SidebarMenuItem>
     );
   } else {
@@ -254,24 +244,28 @@ const isSelected =
           className="group/collapsible  [&[data-state=open]>div>button>svg:first-child]:rotate-90"
         >
           <div className="flex items-center group">
-            <CollapsibleTrigger>
-              <SidebarMenuButton className="flex-1">
+            <CollapsibleTrigger
+              render={
+                <SidebarMenuButton className="flex-1">
                 <ChevronRight className="transition-transform" />
                 <Folder className="h-4 w-4 mr-2 shrink-0" />
                 <span>{folderName}</span>
-              </SidebarMenuButton>
-            </CollapsibleTrigger>
+                </SidebarMenuButton>
+              }
+            />
 
             <DropdownMenu>
-              <DropdownMenuTrigger>
-                <Button
+              <DropdownMenuTrigger
+                render={
+                  <Button
                   variant="ghost"
                   size="icon"
                   className="h-6 w-6 opacity-0 group-hover:opacity-100 transition-opacity"
-                >
-                  <MoreHorizontal className="h-3 w-3" />
-                </Button>
-              </DropdownMenuTrigger>
+                  >
+                    <MoreHorizontal className="h-3 w-3" />
+                  </Button>
+                }
+              />
               <DropdownMenuContent align="end">
                 <DropdownMenuItem onClick={handleAddFile}>
                   <FilePlus className="h-4 w-4 mr-2" />
