@@ -58,7 +58,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import { NewFileDialog, NewFolderDialog, RenameFolderDialog } from "./template-file-tree";
+import { NewFileDialog, NewFolderDialog, RenameFileDialog, RenameFolderDialog } from "./template-file-tree";
 
 interface TemplateFile {
   filename: string;
@@ -156,17 +156,9 @@ const isSelected =
           </SidebarMenuButton>
 
           <DropdownMenu>
-            <DropdownMenuTrigger
-              render={
-                <Button
-                variant={"ghost"}
-                size={"icon"}
-                className="h-6 w-6 opacity-0 group-hover:opacity-100 transition-opacity"
-                >
-                  <MoreHorizontal className="h-3 w-3" />
-                </Button>
-              }
-            />
+            <DropdownMenuTrigger className="h-6 w-6 opacity-0 group-hover:opacity-100 transition-opacity">
+              <MoreHorizontal className="h-3 w-3" />
+            </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuItem onClick={handleRename}>
                 <Edit3 className="h-4 w-4 mr-2" />
@@ -180,6 +172,34 @@ const isSelected =
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
+
+        <RenameFileDialog
+          isOpen={isRenameDialogOpen}
+          onClose={() => setIsRenameDialogOpen(false)}
+          onRename={handleRenameSubmit}
+          currentFilename={file.filename}
+          currentExtension={file.fileExtension}
+        />
+
+        <AlertDialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Delete File</AlertDialogTitle>
+              <AlertDialogDescription>
+                Are you sure you want to delete "{fileName}"? This action cannot be undone.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <AlertDialogAction
+                onClick={confirmDelete}
+                className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+              >
+                Delete
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
       </SidebarMenuItem>
     );
   } else {
@@ -244,28 +264,16 @@ const isSelected =
           className="group/collapsible  [&[data-state=open]>div>button>svg:first-child]:rotate-90"
         >
           <div className="flex items-center group">
-            <CollapsibleTrigger
-              render={
-                <SidebarMenuButton className="flex-1">
-                <ChevronRight className="transition-transform" />
-                <Folder className="h-4 w-4 mr-2 shrink-0" />
-                <span>{folderName}</span>
-                </SidebarMenuButton>
-              }
-            />
+            <CollapsibleTrigger className="flex-1">
+              <ChevronRight className="transition-transform" />
+              <Folder className="h-4 w-4 mr-2 shrink-0" />
+              <span>{folderName}</span>
+            </CollapsibleTrigger>
 
             <DropdownMenu>
-              <DropdownMenuTrigger
-                render={
-                  <Button
-                  variant="ghost"
-                  size="icon"
-                  className="h-6 w-6 opacity-0 group-hover:opacity-100 transition-opacity"
-                  >
-                    <MoreHorizontal className="h-3 w-3" />
-                  </Button>
-                }
-              />
+              <DropdownMenuTrigger className="h-6 w-6 opacity-0 group-hover:opacity-100 transition-opacity">
+                <MoreHorizontal className="h-3 w-3" />
+              </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 <DropdownMenuItem onClick={handleAddFile}>
                   <FilePlus className="h-4 w-4 mr-2" />
