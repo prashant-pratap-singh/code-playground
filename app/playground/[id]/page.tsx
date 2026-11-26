@@ -48,7 +48,7 @@ import {
     ResizablePanelGroup,
 } from "@/components/ui/resizable";
 import { TemplateFile } from "@/features/playground/types";
-// import PlaygroundEditor from "@/features/playground/components/playground-editor";
+import PlaygroundEditor from "@/features/playground/components/playground-editor";
 
 const Page = () => {
     const { id } = useParams<{ id: string }>();
@@ -253,13 +253,13 @@ const Page = () => {
                                     >
                                         <ResizablePanel defaultSize={isPreviewVisible ? 50 : 100}>
 
-                                            {/* <PlaygroundEditor
+                                            <PlaygroundEditor
   activeFile={activeFile}
   content={activeFile?.content || ""}
   onContentChange={(value: string)=>
     activeFileId && updateFileContent(activeFileId , value)
   }
-  /> */}
+  />
 
                                         </ResizablePanel>
                                     </ResizablePanelGroup>
