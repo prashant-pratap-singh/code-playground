@@ -53,8 +53,8 @@ import { useWebContainer } from "@/features/webContainers/hooks/useWebContainer"
 import WebContainerPreview from "@/features/webContainers/components/webcontainer-preview";
 import LoadingStep from "@/components/ui/loader";
 import { findFilePath } from "@/features/playground/libs";
-// import ToggleAI from "@/features/playground/components/toggle-ai";
-// import { useAISuggestions } from "@/features/ai/hooks/useAISuggestion";
+import ToggleAI from "@/features/playground/components/toggle-ai";
+import { useAISuggestions } from "@/features/ai/hooks/useAISuggestion";
 
 const Page = () => {
   const { id } = useParams<{ id: string }>();
@@ -62,7 +62,7 @@ const Page = () => {
   const { playgroundData, templateData, isLoading, error, saveTemplateData } =
     usePlayground(id);
 
-  // const aiSuggestion = useAISuggestions();
+  const aiSuggestion = useAISuggestions();
 
   const {
     activeFileId,
@@ -492,7 +492,7 @@ const Page = () => {
 
                 <div className="flex-1">
                   <ResizablePanelGroup
-                    direction="horizontal"
+                    orientation="horizontal"
                     className="h-full"
                   >
                     <ResizablePanel defaultSize={isPreviewVisible ? 50 : 100}>
@@ -502,18 +502,19 @@ const Page = () => {
                         onContentChange={(value) =>
                           activeFileId && updateFileContent(activeFileId, value)
                         }
-                        suggestion={aiSuggestion.suggestion}
-                        suggestionLoading={aiSuggestion.isLoading}
-                        suggestionPosition={aiSuggestion.position}
-                        onAcceptSuggestion={(editor, monaco) =>
-                          aiSuggestion.acceptSuggestion(editor, monaco)
-                        }
-                        onRejectSuggestion={(editor) =>
-                          aiSuggestion.rejectSuggestion(editor)
-                        }
-                        onTriggerSuggestion={(type, editor) =>
-                          aiSuggestion.fetchSuggestion(type, editor)
-                        }
+                        {...({
+                          suggestion: aiSuggestion.suggestion,
+                          suggestionLoading: aiSuggestion.isLoading,
+                          suggestionPosition: aiSuggestion.position,
+                          onAcceptSuggestion: (
+                            editor: any,
+                            monaco: typeof import("monaco-editor")
+                          ) => aiSuggestion.acceptSuggestion(editor, monaco),
+                          onRejectSuggestion: (editor: any) =>
+                            aiSuggestion.rejectSuggestion(editor),
+                          onTriggerSuggestion: (type: any, editor: any) =>
+                            aiSuggestion.fetchSuggestion(type, editor),
+                        } as any)}
                       />
                     </ResizablePanel>
 
