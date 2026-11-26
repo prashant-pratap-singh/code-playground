@@ -1,37 +1,62 @@
-
 "use client";
-
-import React, { useRef } from "react";
-import { useState, useCallback } from "react";
 import { Separator } from "@/components/ui/separator";
 import { SidebarInset, SidebarTrigger } from "@/components/ui/sidebar";
-import type { TemplateFile } from "@/features/playground/libs/path-to-json";
-import { useParams } from "next/navigation";
-import { toast } from "sonner";
+import TemplateFileTree from "@/features/playground/components/template-file-tree";
+import { useFileExplorer } from "@/features/playground/hooks/useFileExplorer";
 
-import { SaveUpdatedCode } from "@/features/playground/actions";
 import { usePlayground } from "@/features/playground/hooks/usePlayground";
+import { useParams } from "next/navigation";
+import React from "react";
 
-const MainPlaygroundPage = () => {
+const Page = () => {
   const { id } = useParams<{ id: string }>();
+  const {playgroundData , templateData , isLoading , error , saveTemplateData} = usePlayground(id)
   const {
-    playgroundData,
-    templateData,
-    isLoading,
-    error,
-    saveTemplateData,
-  } = usePlayground(id);
+    activeFileId,
+    closeAllFiles,
+    openFile,
+    closeFile,
+    editorContent,
+    updateFileContent,
+    handleAddFile,
+    handleAddFolder,
+    handleDeleteFile,
+    handleDeleteFolder,
+    handleRenameFile,
+    handleRenameFolder,
+    openFiles,
+    setTemplateData,
+    setActiveFileId,
+    setPlaygroundId,
+    setOpenFiles,
+  } = useFileExplorer();
 
-  console.log(templateData);
-  console.log("PlaygroundData", playgroundData);
+  React.useEffect(() => {
+    setTemplateData(templateData);
+  }, [setTemplateData, templateData]);
 
+  
   return (
     <div>
       <>
-        {/* TODO: TEMPLATEFILE TREE */}
+      <TemplateFileTree
+        data={templateData!}
+        onRenameFile={(file, newFilename, newExtension, parentPath) =>
+          handleRenameFile(
+            file,
+            newFilename,
+            newExtension,
+            parentPath,
+            saveTemplateData
+          )
+        }
+        onRenameFolder={(folder, newFolderName, parentPath) =>
+          handleRenameFolder(folder, newFolderName, parentPath, saveTemplateData)
+        }
+      />
 
         <SidebarInset>
-          <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4">
+          <header className="felx h-16 shrink-0 items-center gap-2 border-b px-4">
             <SidebarTrigger className="-ml-1" />
             <Separator orientation="vertical" className="mr-2 h-4" />
 
@@ -47,4 +72,4 @@ const MainPlaygroundPage = () => {
   );
 };
 
-export default MainPlaygroundPage;
+export default Page;
