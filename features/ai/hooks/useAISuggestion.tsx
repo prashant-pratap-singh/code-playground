@@ -177,4 +177,4 @@ export const useAISuggestions = (): UseAISuggestionsReturn => {
     rejectSuggestion,
     clearSuggestion,
   };
-};
+}; 
