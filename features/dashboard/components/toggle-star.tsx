@@ -12,7 +12,7 @@ interface MarkedToggleButtonProps extends React.ComponentPropsWithoutRef<typeof 
   id: string
 }
 
-export const MarkedToggleButton = forwardRef<HTMLButtonElement, MarkedToggleButtonProps>(
+export const MarkedToggleButton = forwardRef<HTMLElement, MarkedToggleButtonProps>(
   ({ markedForRevision, id, onClick, className, children, ...props }, ref) => {
     const [isMarked, setIsMarked] = useState(markedForRevision)
 
@@ -20,7 +20,7 @@ export const MarkedToggleButton = forwardRef<HTMLButtonElement, MarkedToggleButt
       setIsMarked(markedForRevision)
     }, [markedForRevision])
 
-    const handleToggle = async (event: React.MouseEvent<HTMLButtonElement>) => {
+    const handleToggle: NonNullable<MarkedToggleButtonProps["onClick"]> = async (event) => {
       // Call the original onClick if provided by the parent (DropdownMenuItem)
       onClick?.(event)
 
