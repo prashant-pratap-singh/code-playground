@@ -4,11 +4,9 @@ import { toast } from 'sonner';
 import { getPlaygroundById, SaveUpdatedCode } from '@/features/playground/actions';
 import type { TemplateFolder } from '@/features/playground/libs/path-to-json';
 
-interface PlaygroundData {
-  id: string;
-  title?: string;
-  [key: string]: any;
-}
+type PlaygroundData = NonNullable<
+  Awaited<ReturnType<typeof getPlaygroundById>>
+>;
 
 interface UsePlaygroundReturn {
   playgroundData: PlaygroundData | null;
@@ -33,8 +31,7 @@ export const usePlayground = (id: string): UsePlaygroundReturn => {
       setError(null);
 
       const data = await getPlaygroundById(id);
-      setPlaygroundData(data);
-        //@ts-ignore
+      setPlaygroundData(data ?? null);
       const rawContent = data?.templateFiles?.[0]?.content;
       if (typeof rawContent === "string") {
         const parsedContent = JSON.parse(rawContent);
@@ -82,9 +79,9 @@ export const usePlayground = (id: string): UsePlaygroundReturn => {
     }
   }, [id]);
 
-  useEffect(() => {
-    loadPlayground();
-  }, [loadPlayground]);
+ useEffect(() => {
+  void loadPlayground();
+}, [loadPlayground]);
 
   return {
     playgroundData,
